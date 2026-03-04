@@ -1,5 +1,4 @@
-{import Deposit from "./deposit";
-const [userBalance, setUserBalance] = useState(3000);
+{
   "name": "playmood-vip",
   "private": true,
   "scripts": {
