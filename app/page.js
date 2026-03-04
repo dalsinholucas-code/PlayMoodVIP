@@ -22,7 +22,7 @@ export default function Home() {
       return;
     }
 
-    setMensagem("Depósito enviado. Aguardando confirmação...");
+    setMensagem("Depósito enviado. Aguarde confirmação.");
 
     setTimeout(() => {
       setSaldo(saldo + Number(valorDeposito));
@@ -58,58 +58,139 @@ export default function Home() {
 
   if (!logado) {
     return (
-      <div style={{padding: 40}}>
-        <h1>PlayMood VIP</h1>
-        <input
-          placeholder="Digite seu nome"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-        />
-        <button onClick={fazerLogin}>Entrar</button>
+      <div style={estiloLogin}>
+        <div style={card}>
+          <h1 style={titulo}>PlayMood VIP</h1>
+          <input
+            style={input}
+            placeholder="Digite seu nome"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
+          <button style={botaoPrincipal} onClick={fazerLogin}>
+            Entrar
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{padding: 40}}>
-      <h1>Bem-vindo, {nome}</h1>
-      <h2>Saldo: {saldo} Kz</h2>
+    <div style={estiloPagina}>
+      <div style={card}>
+        <h1 style={titulo}>Bem-vindo, {nome}</h1>
+        <h2>Saldo: {saldo} Kz</h2>
 
-      <hr />
+        <hr />
 
-      <h3>Depositar Créditos</h3>
+        <h3>Depositar Créditos</h3>
 
-      <select value={banco} onChange={(e) => setBanco(e.target.value)}>
-        <option>BFA</option>
-        <option>BCI</option>
-        <option>BAI</option>
-      </select>
+        <select style={input} value={banco} onChange={(e) => setBanco(e.target.value)}>
+          <option>BFA</option>
+          <option>BCI</option>
+          <option>BAI</option>
+        </select>
 
-      <br /><br />
+        <input
+          style={input}
+          type="number"
+          placeholder="Valor a depositar"
+          value={valorDeposito}
+          onChange={(e) => setValorDeposito(e.target.value)}
+        />
 
-      <input
-        type="number"
-        placeholder="Valor a depositar"
-        value={valorDeposito}
-        onChange={(e) => setValorDeposito(e.target.value)}
-      />
+        <button style={botaoVerde} onClick={depositar}>
+          Enviar Comprovante
+        </button>
 
-      <button onClick={depositar}>Enviar Comprovante</button>
+        <hr />
 
-      <hr />
+        <h3>Fazer Aposta</h3>
 
-      <h3>Fazer Aposta</h3>
+        <input
+          style={input}
+          type="number"
+          placeholder="Valor da aposta"
+          value={valorAposta}
+          onChange={(e) => setValorAposta(e.target.value)}
+        />
 
-      <input
-        type="number"
-        placeholder="Valor da aposta"
-        value={valorAposta}
-        onChange={(e) => setValorAposta(e.target.value)}
-      />
+        <button style={botaoDourado} onClick={apostar}>
+          Apostar
+        </button>
 
-      <button onClick={apostar}>Apostar</button>
-
-      <p>{mensagem}</p>
+        <p style={{ marginTop: 20 }}>{mensagem}</p>
+      </div>
     </div>
   );
-      }
+}
+
+const estiloPagina = {
+  minHeight: "100vh",
+  background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: 20,
+};
+
+const estiloLogin = {
+  minHeight: "100vh",
+  background: "linear-gradient(135deg, #000000, #1f1f1f)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+const card = {
+  backgroundColor: "#111",
+  padding: 30,
+  borderRadius: 12,
+  width: 350,
+  textAlign: "center",
+  boxShadow: "0 0 20px rgba(0,0,0,0.5)",
+  color: "white",
+};
+
+const titulo = {
+  color: "#FFD700",
+  marginBottom: 20,
+};
+
+const input = {
+  width: "100%",
+  padding: 10,
+  marginBottom: 15,
+  borderRadius: 6,
+  border: "none",
+};
+
+const botaoPrincipal = {
+  width: "100%",
+  padding: 10,
+  backgroundColor: "#FFD700",
+  border: "none",
+  borderRadius: 6,
+  cursor: "pointer",
+  fontWeight: "bold",
+};
+
+const botaoVerde = {
+  width: "100%",
+  padding: 10,
+  backgroundColor: "#28a745",
+  border: "none",
+  borderRadius: 6,
+  cursor: "pointer",
+  color: "white",
+};
+
+const botaoDourado = {
+  width: "100%",
+  padding: 10,
+  backgroundColor: "#ffc107",
+  border: "none",
+  borderRadius: 6,
+  cursor: "pointer",
+  fontWeight: "bold",
+};
