@@ -5,35 +5,16 @@ export default function Home() {
   const [nome, setNome] = useState("");
   const [logado, setLogado] = useState(false);
   const [saldo, setSaldo] = useState(3000);
-  const [valorDeposito, setValorDeposito] = useState("");
-  const [banco, setBanco] = useState("BFA");
-  const [mensagem, setMensagem] = useState("");
   const [valorAposta, setValorAposta] = useState("");
+  const [mensagem, setMensagem] = useState("");
 
   const fazerLogin = () => {
-    if (nome.trim() !== "") {
-      setLogado(true);
-    }
+    if (nome.trim() !== "") setLogado(true);
   };
 
-  const depositar = () => {
-    if (!valorDeposito || valorDeposito <= 0) {
-      setMensagem("Digite um valor válido.");
-      return;
-    }
-
-    setMensagem("Depósito enviado. Aguarde confirmação.");
-
-    setTimeout(() => {
-      setSaldo(saldo + Number(valorDeposito));
-      setMensagem("Depósito confirmado! Saldo atualizado.");
-      setValorDeposito("");
-    }, 3000);
-  };
-
-  const apostar = () => {
+  const apostar = (odd) => {
     if (!valorAposta || valorAposta <= 0) {
-      setMensagem("Digite um valor válido para apostar.");
+      setMensagem("Digite um valor válido.");
       return;
     }
 
@@ -45,12 +26,12 @@ export default function Home() {
     const ganhou = Math.random() > 0.5;
 
     if (ganhou) {
-      const premio = valorAposta * 2;
+      const premio = valorAposta * odd;
       setSaldo(saldo + premio);
-      setMensagem("Parabéns! Você ganhou " + premio + " Kz!");
+      setMensagem("Ganhou! Recebeu " + premio + " Kz (Odd " + odd + ")");
     } else {
       setSaldo(saldo - valorAposta);
-      setMensagem("Perdeu a aposta. Tente novamente.");
+      setMensagem("Perdeu a aposta.");
     }
 
     setValorAposta("");
@@ -58,7 +39,7 @@ export default function Home() {
 
   if (!logado) {
     return (
-      <div style={estiloLogin}>
+      <div style={fundoLogin}>
         <div style={card}>
           <h1 style={titulo}>PlayMood VIP</h1>
           <input
@@ -67,7 +48,7 @@ export default function Home() {
             value={nome}
             onChange={(e) => setNome(e.target.value)}
           />
-          <button style={botaoPrincipal} onClick={fazerLogin}>
+          <button style={botaoDourado} onClick={fazerLogin}>
             Entrar
           </button>
         </div>
@@ -76,36 +57,10 @@ export default function Home() {
   }
 
   return (
-    <div style={estiloPagina}>
+    <div style={fundo}>
       <div style={card}>
         <h1 style={titulo}>Bem-vindo, {nome}</h1>
         <h2>Saldo: {saldo} Kz</h2>
-
-        <hr />
-
-        <h3>Depositar Créditos</h3>
-
-        <select style={input} value={banco} onChange={(e) => setBanco(e.target.value)}>
-          <option>BFA</option>
-          <option>BCI</option>
-          <option>BAI</option>
-        </select>
-
-        <input
-          style={input}
-          type="number"
-          placeholder="Valor a depositar"
-          value={valorDeposito}
-          onChange={(e) => setValorDeposito(e.target.value)}
-        />
-
-        <button style={botaoVerde} onClick={depositar}>
-          Enviar Comprovante
-        </button>
-
-        <hr />
-
-        <h3>Fazer Aposta</h3>
 
         <input
           style={input}
@@ -115,8 +70,19 @@ export default function Home() {
           onChange={(e) => setValorAposta(e.target.value)}
         />
 
-        <button style={botaoDourado} onClick={apostar}>
-          Apostar
+        <h3>⚽ Jogo Futebol (Odd 2.00)</h3>
+        <button style={botaoVerde} onClick={() => apostar(2)}>
+          Apostar Futebol
+        </button>
+
+        <h3>🎲 Dupla Chance (Odd 1.50)</h3>
+        <button style={botaoAzul} onClick={() => apostar(1.5)}>
+          Apostar Dupla Chance
+        </button>
+
+        <h3>💎 Super Odd (Odd 3.00)</h3>
+        <button style={botaoVermelho} onClick={() => apostar(3)}>
+          Apostar Super Odd
         </button>
 
         <p style={{ marginTop: 20 }}>{mensagem}</p>
@@ -125,18 +91,17 @@ export default function Home() {
   );
 }
 
-const estiloPagina = {
+const fundo = {
   minHeight: "100vh",
   background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  padding: 20,
 };
 
-const estiloLogin = {
+const fundoLogin = {
   minHeight: "100vh",
-  background: "linear-gradient(135deg, #000000, #1f1f1f)",
+  background: "black",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -148,13 +113,12 @@ const card = {
   borderRadius: 12,
   width: 350,
   textAlign: "center",
-  boxShadow: "0 0 20px rgba(0,0,0,0.5)",
   color: "white",
+  boxShadow: "0 0 20px rgba(0,0,0,0.6)",
 };
 
 const titulo = {
   color: "#FFD700",
-  marginBottom: 20,
 };
 
 const input = {
@@ -165,7 +129,7 @@ const input = {
   border: "none",
 };
 
-const botaoPrincipal = {
+const botaoDourado = {
   width: "100%",
   padding: 10,
   backgroundColor: "#FFD700",
@@ -185,12 +149,24 @@ const botaoVerde = {
   color: "white",
 };
 
-const botaoDourado = {
+const botaoAzul = {
   width: "100%",
   padding: 10,
-  backgroundColor: "#ffc107",
+  backgroundColor: "#007bff",
   border: "none",
   borderRadius: 6,
   cursor: "pointer",
-  fontWeight: "bold",
+  color: "white",
 };
+
+const botaoVermelho = {
+  width: "100%",
+  padding: 10,
+  backgroundColor: "#dc3545",
+  border: "none",
+  borderRadius: 6,
+  cursor: "pointer",
+  color: "white",
+};
+
+
